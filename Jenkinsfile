@@ -10,7 +10,7 @@ podTemplate(containers: [
     stage('Build a gradle project') {
 
       // This was a test run in my old repo using the main branch
-      git branch: 'main', credentialsId: 'jenkins-user-token', url: 'https://github.com/AshleeGhil/week6.git'
+      git branch: 'main', credentialsId: 'jenkins-user-token', url: 'https://github.com/AshleeGhil/week7.git'
       container('gradle') {
         stage('Build a gradle project') {
          // My gradle is in the top level of this particular repo so no cd was necessary
