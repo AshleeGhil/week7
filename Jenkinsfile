@@ -1,5 +1,3 @@
-
-
 podTemplate(yaml: '''
     apiVersion: v1
     kind: Pod
@@ -39,7 +37,7 @@ podTemplate(yaml: '''
 ''') {
   node(POD_LABEL) {
     stage('Build a gradle project') {
-      git 'https://github.com/AshleeGhil/week7.git'
+      git branch: 'main', url: 'https://github.com/AshleeGhil/week7.git'
       container('gradle') {
         stage('Build a gradle project') {
           sh '''
@@ -59,7 +57,7 @@ podTemplate(yaml: '''
           echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
           echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
           mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
-          /kaniko/executor --context `pwd` --destination AshleeGhil/hello-kaniko:1.0
+          /kaniko/executor --context `pwd` --destination ashleeghil/hello-kaniko:1.0
           '''
         }
       }
