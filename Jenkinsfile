@@ -73,6 +73,7 @@ podTemplate(yaml: '''
          } catch (Exception E) {
             echo 'Failure detected'
             }
+       
 // from the HTML publisher plugin
 // https://www.jenkins.io/doc/pipeline/steps/htmlpublisher/
 // from the HTML publisher plugin
@@ -83,7 +84,13 @@ podTemplate(yaml: '''
             reportName: "JaCoCo Checkstyle"
          ])
     }
-
-
+      
+    stage("Acceptance test") {
+	    steps {
+	        sleep 60
+	        sh "chmod +x acceptance-test.sh && ./acceptance-test.sh"
+	    }
+    }
+      
   }
 }
