@@ -37,10 +37,11 @@ podTemplate(yaml: '''
 ''') {
   node(POD_LABEL) {
     stage('Build a gradle project') {
-      git branch: 'main', url: 'https://github.com/AshleeGhil/week7.git'
+      git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
       container('gradle') {
         stage('Build a gradle project') {
           sh '''
+          cd /home/jenkins/agent/workspace/multi-test1_main/Chapter08/sample1
           chmod +x gradlew
           ./gradlew build
           mv ./build/libs/calculator-0.0.1-SNAPSHOT.jar /mnt
@@ -62,6 +63,48 @@ podTemplate(yaml: '''
         }
       }
     }
+}
+stage("Feature Tests") {
+            echo "I am the ${env.BRANCH_NAME} branch"
+        if (env.BRANCH_NAME == 'feature') 
+            {
+                   try {
+                    sh '''
+                    pwd
+                    cd /home/jenkins/agent/workspace/multi-test1_main/Chapter08/sample1
+                    chmod +x gradlew
+                    ./gradlew checkstyleMain
+                    ./gradlew jacocoTestReport 
+                    '''
+               }
+         
+               catch (Exception E) {
+                echo 'Failure detected'
+                }
+          }
+        }
+}
 
-  }
+stage("Main Tests") {
+            echo "I am the ${env.BRANCH_NAME} branch"
+        if (env.BRANCH_NAME == 'main') 
+            {
+                   try {
+                    sh '''
+                    pwd
+                    cd /home/jenkins/agent/workspace/multi-test1_main/Chapter08/sample1
+                    chmod +x gradlew
+                    ./gradlew jacocoTestCoverageVerification
+                    ./gradlew checkstyleMain
+                    ./gradlew jacocoTestReport 
+                    '''
+               }
+               catch (Exception E) {
+                echo 'Failure detected'
+                }
+          }
+        }
+
+stage("Playground Tests") {
+            echo "I am the ${env.BRANCH_NAME} branch"
 }
