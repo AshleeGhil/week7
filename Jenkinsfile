@@ -64,16 +64,17 @@ podTemplate(yaml: '''
       }
     }
 }
-stage("Unit test") {
+stage("Feature Tests") {
             echo "I am the ${env.BRANCH_NAME} branch"
         if (env.BRANCH_NAME == 'feature') 
             {
                    try {
                     sh '''
                     pwd
-                    cd Chapter08/sample1
+                    cd /home/jenkins/agent/workspace/multi-test1_main/Chapter08/sample1
                     chmod +x gradlew
-                    ./gradlew test
+                    ./gradlew checkstyleMain
+                    ./gradlew jacocoTestReport 
                     '''
                }
          
@@ -82,4 +83,29 @@ stage("Unit test") {
                 }
           }
         }
+}
+
+stage("Main Tests") {
+            echo "I am the ${env.BRANCH_NAME} branch"
+        if (env.BRANCH_NAME == 'main') 
+            {
+                   try {
+                    sh '''
+                    pwd
+                    cd /home/jenkins/agent/workspace/multi-test1_main/Chapter08/sample1
+                    chmod +x gradlew
+                    ./gradlew jacocoTestCoverageVerification
+                    ./gradlew checkstyleMain
+                    ./gradlew jacocoTestReport 
+                    '''
+               }
+               catch (Exception E) {
+                echo 'Failure detected'
+                }
+          }
+        }
+}
+
+stage("Playground Tests") {
+            echo "I am the ${env.BRANCH_NAME} branch"
 }
