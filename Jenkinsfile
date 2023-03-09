@@ -71,7 +71,7 @@ stage("Feature Tests") {
                    try {
                     sh '''
                     pwd
-                    cd /home/jenkins/agent/workspace/multi-test1_feature/Chapter08/sample1
+                    cd /Chapter08/sample1
                     chmod +x gradlew
                     ./gradlew checkstyleMain
                     ./gradlew jacocoTestReport 
@@ -92,7 +92,7 @@ stage("Main Tests") {
                    try {
                     sh '''
                     pwd
-                    cd /home/jenkins/agent/workspace/multi-test1_main/Chapter08/sample1
+                    cd /Chapter08/sample1
                     chmod +x gradlew
                     ./gradlew jacocoTestCoverageVerification
                     ./gradlew checkstyleMain
