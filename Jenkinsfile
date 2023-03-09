@@ -37,7 +37,7 @@ podTemplate(yaml: '''
 ''') {
   node(POD_LABEL) {
     stage('Build a gradle project') {
-      git branch: 'main', url: 'https://github.com/AshleeGhil/week7.git'
+      git branch: 'main', url: 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
       container('gradle') {
         stage('Build a gradle project') {
           sh '''
