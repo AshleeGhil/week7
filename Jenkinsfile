@@ -104,7 +104,6 @@ stage("Main Tests") {
                 }
           }
         }
-}
 
 stage("Playground Tests") {
             echo "I am the ${env.BRANCH_NAME} branch"
