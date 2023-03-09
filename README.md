@@ -1,6 +1,2 @@
-first commit to main
-second change to main
-woo
-ffffasdfasdfasdfasdf
-j
-aDFG
+
+I have two different readmes why the fuck is that?
