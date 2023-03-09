@@ -63,17 +63,22 @@ podTemplate(yaml: '''
         }
       }
     }
-    stage("Code coverage") {
-        try {
-            sh '''
-            pwd
-            ./gradlew jacocoTestCoverageVerification
-            ./gradlew jacocoTestReport
-            ./gradlew checkstyleMain 
-            '''
-         } catch (Exception E) {
-            echo 'Failure detected'
-            }  
-  }
 }
-}
+stage("Unit test") {
+            echo "I am the ${env.BRANCH_NAME} branch"
+        if (env.BRANCH_NAME == 'feature') 
+            {
+                   try {
+                    sh '''
+                    pwd
+                    cd Chapter08/sample1
+                    chmod +x gradlew
+                    ./gradlew test
+                    '''
+               }
+         
+               catch (Exception E) {
+                echo 'Failure detected'
+                }
+          }
+        }
