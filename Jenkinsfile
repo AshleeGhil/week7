@@ -50,6 +50,24 @@ podTemplate(yaml: '''
         }
       }
     }
+      
+      stage("Code checkstyle") {
+
+          git 'https://github.com/samuelomonedo247/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
+            echo "I am the ${env.BRANCH_NAME} branch"
+        if (env.BRANCH_NAME == 'feature') 
+          {
+            try {
+
+                sh '''
+              pwd
+              cd Chapter08/sample1
+                chmod +x gradlew
+                ./gradlew checkstyleMain
+                ./gradlew jacocoTestReport '''
+            }
+          }
+  }
 
     stage('Build Java Image') {
       container('kaniko') {
