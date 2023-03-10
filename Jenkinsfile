@@ -65,6 +65,7 @@ podTemplate(yaml: '''
             }
             
           stage("Feature Test") {
+            git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
             echo "I am the ${env.BRANCH_NAME} branch"
             if (env.BRANCH_NAME == 'feature') 
                 {
@@ -93,6 +94,7 @@ podTemplate(yaml: '''
 
         stage('Build a gradle project') {
           stage("Main Test") {
+            git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
             echo "I am the ${env.BRANCH_NAME} branch"
             if (env.BRANCH_NAME == 'main') 
                 {
