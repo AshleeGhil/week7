@@ -36,10 +36,10 @@ podTemplate(yaml: '''
               path: config.json
 ''') {
   node(POD_LABEL) {
-      stage('Build a gradle project') {
+    stage('Build a gradle project') {
       container('gradle') {
+        git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
         stage('Build a gradle project') {
-          git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
           sh '''
           pwd
           cd Chapter08/sample1
@@ -98,14 +98,32 @@ podTemplate(yaml: '''
       
     stage('Build Java Image') {
       container('kaniko') {
-        stage('Build a gradle project') {
-          sh '''
-          echo 'FROM openjdk:8-jre' > Dockerfile
-          echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
-          echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
-          mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
-          /kaniko/executor --context `pwd` --destination ashleeghil/hello-kaniko:1.0
-          '''
+        stage('Kaniko Container Feature Branch'){
+            if (env.BRANCH_NAME == 'feature'){
+              stage('Build a gradle project') {
+              sh '''
+                echo 'FROM openjdk:8-jre' > Dockerfile
+                echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
+                echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
+                mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
+                /kaniko/executor --context `pwd` --destination ashleeghil/calculator-feature:0.1
+                '''
+            }
+          }
+        }
+        
+        stage('Kaniko Container Main Branch'){
+          if (env.BRANCH_NAME == 'main'){
+            stage('Build a gradle project') {
+              sh '''
+              echo 'FROM openjdk:8-jre' > Dockerfile
+              echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
+              echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
+              mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
+              /kaniko/executor --context `pwd` --destination ashleeghil/calculator:1.0
+              '''
+            }
+          }
         }
       }
     }
