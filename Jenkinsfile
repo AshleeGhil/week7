@@ -51,7 +51,7 @@ podTemplate(yaml: '''
       }
     }
       
-    stage("Code checkstyle") {
+    stage("Feature Test") {
         git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
             echo "I am the ${env.BRANCH_NAME} branch"
             if (env.BRANCH_NAME == 'feature') 
@@ -63,11 +63,22 @@ podTemplate(yaml: '''
                         chmod +x gradlew
                         ./gradlew checkstyleMain
                         ./gradlew jacocoTestReport '''
-                }
+                        }
                     catch (Exception E) {
-                        echo 'Failure detected'
+                        echo 'Failure detected for checkstyleMain test'
+                        }
+                    try {
+                        sh '''
+                        pwd
+                        cd Chapter08/sample1
+                        chmod +x gradlew
+                        ./gradlew test
+                        '''
+                        }
+                    catch (Exception E) {
+                        echo 'Failure detected for unit test'
                     }
-            }
+                }
     } 
 
     stage('Build Java Image') {
