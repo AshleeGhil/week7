@@ -109,7 +109,6 @@ podTemplate(yaml: '''
                     catch (Exception E) {
                         echo 'Failure detected for Main test'
                         }
-                                }
                     sh '''
                     echo 'FROM openjdk:8-jre' > Dockerfile
                     echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
@@ -118,9 +117,9 @@ podTemplate(yaml: '''
                     /kaniko/executor --context `pwd` --destination ashleeghil/calculator:1.0
                     '''
                 }
+            }
         }
-
       }
     }
-}
+  }
 }
