@@ -48,24 +48,6 @@ podTemplate(yaml: '''
           mv ./build/libs/calculator-0.0.1-SNAPSHOT.jar /mnt
           '''
         }
-        stage("Feature Test") {
-            echo "I am the ${env.BRANCH_NAME} branch"
-            if (env.BRANCH_NAME == 'feature') 
-                {
-                    try {
-                        sh '''
-                        pwd
-                        cd Chapter08/sample1
-                        chmod +x gradlew
-                        ./gradlew checkstyleMain
-                        ./gradlew test
-                        ./gradlew jacocoTestReport '''
-                        }
-                    catch (Exception E) {
-                        echo 'Failure detected for Feature test'
-                        }
-                }
-        }
         
         stage("Playground Test")
             echo "I am the ${env.BRANCH_NAME} branch"
@@ -100,6 +82,33 @@ podTemplate(yaml: '''
     stage('Build Java Image') {
       container('kaniko') {
         stage('Build a gradle project') {
+          stage("Feature Test") {
+            echo "I am the ${env.BRANCH_NAME} branch"
+            if (env.BRANCH_NAME == 'null') 
+                {
+                    try {
+                        sh '''
+                        pwd
+                        cd Chapter08/sample1
+                        chmod +x gradlew
+                        ./gradlew checkstyleMain
+                        ./gradlew test
+                        ./gradlew jacocoTestReport '''
+                        }
+                    catch (Exception E) {
+                        echo 'Failure detected for Feature test'
+                        }
+                            sh '''
+                  echo 'FROM openjdk:8-jre' > Dockerfile
+                  echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
+                  echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
+                  mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
+                  /kaniko/executor --context `pwd` --destination ashleeghil/calculator-feature:0.1
+                  '''
+                }
+        }
+        }
+          stage('Build a gradle project') {
           sh '''
           echo 'FROM openjdk:8-jre' > Dockerfile
           echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
@@ -108,6 +117,7 @@ podTemplate(yaml: '''
           /kaniko/executor --context `pwd` --destination ashleeghil/hello-kaniko:1.0
           '''
         }
+
       }
     }
 }
