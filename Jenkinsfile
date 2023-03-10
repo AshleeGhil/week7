@@ -65,11 +65,11 @@ podTemplate(yaml: '''
             }
             
           stage("Feature Test") {
-            git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
             echo "I am the ${env.BRANCH_NAME} branch"
             if (env.BRANCH_NAME == 'feature') 
                 {
                     try {
+                        git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
                         sh '''
                         pwd
                         cd Chapter08/sample1
@@ -94,11 +94,11 @@ podTemplate(yaml: '''
 
         stage('Build a gradle project') {
           stage("Main Test") {
-            git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
             echo "I am the ${env.BRANCH_NAME} branch"
             if (env.BRANCH_NAME == 'main') 
                 {
                     try {
+                        git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
                         sh '''
                         pwd
                         cd Chapter08/sample1
