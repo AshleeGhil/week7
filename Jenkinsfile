@@ -36,10 +36,10 @@ podTemplate(yaml: '''
               path: config.json
 ''') {
   node(POD_LABEL) {
-    stage('Build a gradle project') {
-      git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
+      stage('Build a gradle project') {
       container('gradle') {
         stage('Build a gradle project') {
+          git 'https://github.com/AshleeGhil/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
           sh '''
           pwd
           cd Chapter08/sample1
